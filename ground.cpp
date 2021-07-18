@@ -25,11 +25,12 @@ ground::sign() {
 /////// move ///////////
 udlr
 ground::move() {
-    bool u = ! (spot < 4);
-    bool d = ! (spot > 11);
-    bool l = ! (spot % 4 == 0);
-    bool r = ! (spot % 4 == 3);
-    return udlr {u, d, l, r};
+    std::set<udlr2> ret;
+    if ( ! (spot < 4)   )   ret.insert(udlr2::u);
+    if ( ! (spot > 11)  )   ret.insert(udlr2::d);
+    if ( ! (spot % 4 == 0)) ret.insert(udlr2::l);
+    if ( ! (spot % 4 == 3)) ret.insert(udlr2::r);
+    return udlr { ret };
 }
 
 template <typename T> void
@@ -91,10 +92,11 @@ ground::view() {
 void
 udlr::view() {
     printf("{ ");
-    if (u) printf("u ");
-    if (d) printf("d ");
-    if (l) printf("l ");
-    if (r) printf("r ");
+    for (auto &i: this->directions) printf("%s ", UDLR_STR(i));
+    // if (u) printf("u ");
+    // if (d) printf("d ");
+    // if (l) printf("l ");
+    // if (r) printf("r ");
     printf("}\n");
 }
 

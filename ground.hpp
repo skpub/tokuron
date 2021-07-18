@@ -1,9 +1,16 @@
 #pragma once
 #include <utility>
 #include <cmath>
+#include <set>
+
+#define UDLR_STR(v) (v) == 0 ? "u": (v) == 1 ? "d": (v) == 2 ? "l": "r"
+
+enum udlr2 {
+  u, d, l, r
+};
 
 struct udlr {
-    bool u, d, l, r;
+    std::set<udlr2> directions;
     void view();
 };
 
