@@ -4,3 +4,5 @@ struct heap {
     int moves;
     heap *parent;
 };
+
+void game(ground);

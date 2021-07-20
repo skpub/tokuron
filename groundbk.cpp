@@ -25,12 +25,11 @@ ground::sign() {
 /////// move ///////////
 udlr
 ground::move() {
-    std::set<udlr2> ret;
-    if ( ! (spot < 4)   )   ret.insert(udlr2::u);
-    if ( ! (spot > 11)  )   ret.insert(udlr2::d);
-    if ( ! (spot % 4 == 0)) ret.insert(udlr2::l);
-    if ( ! (spot % 4 == 3)) ret.insert(udlr2::r);
-    return udlr { ret };
+    bool u = ! (spot < 4);
+    bool d = ! (spot > 11);
+    bool l = ! (spot % 4 == 0);
+    bool r = ! (spot % 4 == 3);
+    return udlr {u, d, l, r};
 }
 
 template <typename T> void
@@ -67,30 +66,11 @@ ground::r() {
     swap(&(*ichiroku)[spot], &(*ichiroku)[index]);
     spot = spot + 1;
 }
-
-void
-ground::go(udlr2 v) {
-    switch (v) {
-        case udlr2::u:
-            u();
-            break;
-        case udlr2::d:
-            d();
-            break;
-        case udlr2::l:
-            l();
-            break;
-        case udlr2::r:
-            r();
-            break;
-    }
-}
-
 /////////////////// move
 
-int
+unsigned char
 ground::manhattandistance() {
-    int sum = 0;
+    unsigned char sum = 0;
     for (int i = 0; i < 16; i++) {
         std::pair<unsigned char, unsigned char> now = split(i);
         std::pair<unsigned char, unsigned char> proper = split((*ichiroku)[i]);
@@ -111,11 +91,10 @@ ground::view() {
 void
 udlr::view() {
     printf("{ ");
-    for (auto &i: this->directions) printf("%s ", UDLR_STR(i));
-    // if (u) printf("u ");
-    // if (d) printf("d ");
-    // if (l) printf("l ");
-    // if (r) printf("r ");
+    if (u) printf("u ");
+    if (d) printf("d ");
+    if (l) printf("l ");
+    if (r) printf("r ");
     printf("}\n");
 }
 
@@ -141,7 +120,7 @@ ground::spotfinder() {
             int index = i;
             auto pos_index = split(index);
             auto pos_value = split(value);
-            std::pair<char, char> move_vector = std::make_pair(
+            std::pair<unsigned char, unsigned char> move_vector = std::make_pair(
                 pos_value.first     - pos_index.first,
                 pos_value.second    - pos_index.second);
 
@@ -167,18 +146,13 @@ ground::spotfinder() {
                 }
             }
         }
-        if (this->is_Even_DESTRUCTIVE()) cost[i] = this->manhattandistance();
+
+        if (this->is_Even_DESTRUCTIVE()) goto set;
     }   // -- checked each i is wheather spot or not.
 
-    int min_cost = __INT_MAX__;
-    for (int i = 0; i < 16; i++) {
-        if (cost[i] < min_cost) {
-            min_cost = cost[i];
-            spot = i;
-        }
-    }
-    this->ichiroku = def16;
-    this->view();
+    set:
+        spot = i;
+        this->ichiroku = def16;
     //     if (this->is_Even_DESTRUCTIVE()) goto set;
     // }   // -- checked each i is wheather spot or not.
 

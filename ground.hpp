@@ -25,6 +25,7 @@ struct ground {
     void d();
     void l();
     void r();
+    void go(udlr2);
     int manhattandistance();
     void view();
   // private:

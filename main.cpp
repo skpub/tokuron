@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "ground.hpp"
+#include "game.hpp"
 
 int main() {
     // ground gr({15,2,6,3,4,5,0,7,1,9,10,11,8,13,12,14}); 
@@ -20,5 +21,7 @@ int main() {
     udlr v = gr.move();
     v.view();
     // gr.view();
+    printf("___-----game start-----_____\n");
+    game(gr);
     return 0;
 }
