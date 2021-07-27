@@ -2,6 +2,7 @@
 #include <utility>
 #include <cmath>
 #include <set>
+#include "constant.hpp"
 
 #define UDLR_STR(v) (v) == 0 ? "u": (v) == 1 ? "d": (v) == 2 ? "l": "r"
 
@@ -15,11 +16,11 @@ struct udlr {
 };
 
 struct ground {
-    unsigned char (*ichiroku)[16];
+    unsigned char (*ichiroku)[N*N];
     unsigned char spot = 0;
   public:
     unsigned long long sign();
-    ground(unsigned char (&&)[16]);
+    ground(unsigned char (&&)[N*N]);
     udlr move();
     void u();
     void d();
